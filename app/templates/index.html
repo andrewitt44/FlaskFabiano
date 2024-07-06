@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+
+    {% include 'nave.html' %}
+    <div>
+        {% if current_user.is_authenticated %}
+        <span class="btn btn-primary">{{current_user.nome}} {{current_user.sobrenome}}</span>
+        <a href="{{url_for('logout')}}" class="btn btn-danger">Sair</a>
+        <br><br>
+        <a href="{{url_for('PostLista')}}"class="btn btn-success">Lista de turmas</a>
+        <div class="Title">
+            <h1 class="welcomeTitle">Bem-Vindo</h1>
+            <hr class="welcomeHr">
+            <p class="welcomeText">Gerenciamos suas turmas de mecânica, facilitando a educação e simplificando a gestão.</p>
+        </div>
+        <div class="optionsWelcome">
+            <div class="turmas">
+                
+            </div>
+        </div>
+
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+            
+            .Title {
+                text-align: center;
+            }
+            .welcomeHr {
+                width: 25%;
+                margin-left: 480px;
+            }
+            .welcomeTitle {
+                font-size: 52px;
+                font-weight: 500;
+                font-family: "Montserrat", sans-serif;
+            }
+            .welcomeText {
+                font-size: 26px;
+                font-family: "Montserrat", sans-serif;
+                font-weight: 400;
+                margin-right: 17vw;
+                margin-left: 17vw;
+            }
+        </style>
+        
+        {% else %}
+
+        <form action="" method="post" class="row mt-4 p-4 round border shadow">
+            <h3>Bem Vindo</h3>
+            {{form.csrf_token}}
+
+            {{form.email.label()}}
+            {{form.email(class="form-control")}}
+
+            {{form.senha.label()}}
+            {{form.senha(class="form-control")}}
+
+            {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}}
+        
+            <div class="col-12 mt-4">tem cadastro? <a href="{{url_for('cadastro')}}" class="btn-primary">Clique aqui e faça o seu cadastro</a></div>
+        </form>
+
+        {% endif %}
+
+    </div>
+</div>
+{% endblock %}
+
+
+
+      

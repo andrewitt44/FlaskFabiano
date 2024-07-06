@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    {% include 'nave.html' %}
+    <span class="btn btn-primary">{{current_user.nome}} {{current_user.sobrenome}}</span>
+    <div class="row mt-4">
+        <h3>Turma:</h3>
+        {% for linha in posts %}
+        <h3>{{linha.msg_resumo()}}</h3>
+        {% endfor %}
+        <div class="col-md-12 mt-4">
+            <h4>{{ obj.mensagem }}</h4>
+        </div>
+
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <br>
+                        <th>Número</th>
+                        <th>Nome</th>
+                    </tr>
+                </thead>
+                <body>
+                    <tr>
+                        {% for comentario in obj.comentarios %}
+                    <tr>
+                        <td>{{ comentario.id }}</td>
+                        <td>{{ comentario.text }}</td>
+                    </tr>
+                    {% endfor %}
+                    </tr>
+                </body>
+            </table>
+        </div>
+
+        <!-- <div class="col-md-12 mt-4">
+            <h5>Atividades</h5>
+            {% for comentario in obj.comentarios %}
+                <p>{{ comentario.text }}</p>
+                <p>data de postagem {{ comentario.data }}</p>
+                <p>Comentado por: {{ comentario.user.nome }} {{ comentario.user.sobrenome }}</p>
+            {% endfor %}
+        </div> -->
+
+        <div class="col-md-12 mt-4">
+            <h5>Cadastrar atividade</h5>
+            <form method="POST">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    {{ form.text.label(class="form-label") }}
+                    {{ form.text(class="form-control") }}
+                </div>
+                <div class="form-group mt-2">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

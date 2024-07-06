@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    {%include 'nave.html'%}
+    <span class="btn btn-primary">{{current_user.nome}} {{current_user.sobrenome}}</span>
+    <div class="row mt-4">
+        <a href="{{url_for('PostNovo')}}"class="btn btn-primary col-12 mt-3">Cadastar turma</a><br>
+        <h3>Lista de turmas</h3>
+
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Número</th>
+                        <th>Post</th>
+                        <th>Ação</th>
+                    </tr>
+                </thead>
+                <body>
+                    <tr>
+                        {% for linha in posts %}
+                    <tr>
+                        <td>{{linha.id}}</td>
+                        <td>{{linha.msg_resumo()}}</td>
+                        <td><a href="{{url_for('postDetail',id=linha.id)}}"class="btn btn-danger">Excluir</a>
+                            <a href="{{url_for('postDetail',id=linha.id)}}"class="btn btn-success">Visualizar</a></td>
+                    </tr>
+                    {% endfor %}
+                    </tr>
+                </body>
+            </table>
+        </div>
+    </div>
+</div>
+
+<style>
+    td {
+        background-color: #DCDCDC;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,28 @@
+<div class="butons">
+    <div class="logo">
+        <img src="{{url_for('static', filename='../static/img/LOGO SENAI.png')}}" height="80" width="80">
+    </div>
+    <div class="butonsHome">
+        <a href="/" class="btn btn-light">Início</a>
+        <a href="/" class="btn btn-light" >Sobre</a>
+        <img src="{{url_for('static', filename='../static/img/MENU.png')}}" height="40" width="50" class="menu">
+    </div>
+</div>
+
+<style>
+    .butons {
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1vw;
+    }
+
+    .butonsHome {
+        margin-top: 2vw;
+        margin-right: 1vw;
+    }
+
+    .menu {
+        margin-left: 5vw;
+    }
+</style>
