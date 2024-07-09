@@ -18,16 +18,16 @@
                 <thead>
                     <tr>
                         <br>
-                        <th>Número</th>
-                        <th>Nome</th>
+                        <th class="bg-light border border-dark">Número</th>
+                        <th class="bg-light border border-dark">Nome</th>
                     </tr>
                 </thead>
                 <body>
                     <tr>
                         {% for comentario in obj.comentarios %}
                     <tr>
-                        <td>{{ comentario.id }}</td>
-                        <td>{{ comentario.text }}</td>
+                        <td class="bg-light border border-dark">{{ comentario.id }}</td>
+                        <td class="bg-light border border-dark">{{ comentario.text }}</td>
                     </tr>
                     {% endfor %}
                     </tr>
@@ -57,6 +57,7 @@
                 </div>
             </form>
         </div>
+
     </div>
 </div>
 {% endblock %}
