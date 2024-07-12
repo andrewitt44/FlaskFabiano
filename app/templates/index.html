@@ -80,7 +80,7 @@
 
         <form action="" method="post" class="areaLogin">
             <div class="ladoEsquerdo">
-                <img src="{{url_for('static', filename='../static/img/imagemInicio.png')}}">
+                <img src="{{url_for('static', filename='../static/img/imagemInicio.png')}}" class="imagemEsquerda">
             </div>
             <div class="ladoDireito">
                 <h3 class="bemVindo">BEM VINDO!</h3>
@@ -159,8 +159,8 @@
         margin-top: 50px;
     }
     .areaLogin {
+        margin-top: 8rem;
         background-color: #0000;
-        border: 2px solid black;
         border-radius: 50px;
         display: flex;
         justify-content: space-evenly;
@@ -171,12 +171,21 @@
         text-decoration: none;
         color: black;
     }
+    .imagemEsquerda {
+        margin-top: 3rem;
+    }
     .ladoDireito {
         margin-right: 0px;
         width: 500px;
+        border-radius: 60px;
+        background-color: grey;
+        padding: 2rem;
     }
     img {
         margin-right: 20px;
+    }
+    .form-control {
+        border-radius: 20px;
     }
     </style>
 {% endblock %}
