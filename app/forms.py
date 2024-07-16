@@ -92,3 +92,32 @@ class PostForm(FlaskForm):
 class ComentarioForm(FlaskForm):
     text = TextAreaField('Atividade', validators=[DataRequired()])
     submit = SubmitField('Adicionar atividade')
+
+class EditPostForm(FlaskForm):
+    mensagem = StringField('Nome da turma', validators=[DataRequired()])
+    btnSubmit = SubmitField('Atualizar')
+
+    def save(self, post_id):
+        post = Post.query.get(post_id)
+        if post:
+            post.mensagem = self.mensagem.data
+            db.session.commit()
+        return post
+
+class AlunoForm(FlaskForm):
+    nome = StringField('Nome do Aluno', validators=[DataRequired()])
+    btnSubmit = SubmitField('Adicionar Aluno')
+
+    def save(self, turma_id):
+        aluno = Aluno(nome=self.nome.data, turma_id=turma_id)
+        db.session.add(aluno)
+        db.session.commit()
+
+class AtividadeForm(FlaskForm):
+    descricao = StringField('Descrição da Atividade', validators=[DataRequired()])
+    btnSubmit = SubmitField('Adicionar Atividade')
+
+    def save(self, turma_id):
+        atividade = Atividade(descricao=self.descricao.data, turma_id=turma_id)
+        db.session.add(atividade)
+        db.session.commit()

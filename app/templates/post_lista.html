@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container">
-    {%include 'nave.html'%}
+    {% include 'nave.html' %}
     <span class="btn btn-primary">Professor: {{current_user.nome}} {{current_user.sobrenome}}</span>
     <div class="row mt-4">
         <h3 class="titulo">Lista de turmas<br></h3>
@@ -14,25 +14,28 @@
                     <tr>
                         <th class="bg-light border border-dark">Número</th>
                         <th class="bg-light border border-dark">Post</th>
-                        <th class="bg-light border border-dark">Ação</th>
+                        <th class="bg-light border border-dark">Ações</th>
                     </tr>
                 </thead>
-                <body>
+                <tbody>
+                    {% for linha in posts %}
                     <tr>
-                        {% for linha in posts %}
-                    <tr>
-                        <td class="bg-light border border-dark">{{linha.id}}</td>
-                        <td class="bg-light border border-dark">{{linha.msg_resumo()}}</td>
-                        <td class="bg-light border border-dark"><a href="{{url_for('postDetail',id=linha.id)}}"class="btn btn-danger">Excluir</a>
-                            <a href="{{url_for('postDetail',id=linha.id)}}"class="btn btn-success">Visualizar</a></td>
+                        <td class="bg-light border border-dark">{{ linha.id }}</td>
+                        <td class="bg-light border border-dark">{{ linha.msg_resumo() }}</td>
+                        <td class="bg-light border border-dark">
+                            <form action="{{ url_for('postDelete', id=linha.id) }}" method="post">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                                <a href="{{ url_for('postEdit', id=linha.id) }}" class="btn btn-warning">Editar</a>
+                                <a href="{{ url_for('postDetail', id=linha.id) }}" class="btn btn-success">Visualizar</a>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
-                    </tr>
-                </body>
+                </tbody>
             </table>
         </div>
         <div class="cadastro">
-            <a href="{{url_for('PostNovo')}}" class="btn btn-primary col-3 mt-3">Cadastar turma</a><br>
+            <a href="{{ url_for('PostNovo') }}" class="btn btn-primary col-3 mt-3">Cadastrar turma</a><br>
         </div>
     </div>
 </div>

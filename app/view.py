@@ -1,9 +1,8 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect
-from app.forms import ComentarioForm, ContatoForm, UserForm, LoginForm, PostForm
+from app.forms import ComentarioForm, ContatoForm, UserForm, LoginForm, PostForm, EditPostForm
 from app.models import Comentario, Contato, User, Post
 from flask_login import login_user, logout_user, current_user
-
 
 
 
@@ -99,3 +98,64 @@ def postDetail(id):
         return redirect(url_for('postDetail', id=id))
     return render_template('post_detail.html', obj=obj, form=form)
 
+
+@app.route('/post/delete/<int:id>', methods=['POST'])
+def postDelete(id):
+    post = Post.query.get(id)
+    if post:
+        db.session.delete(post)
+        db.session.commit()
+    return redirect(url_for('PostLista'))
+
+@app.route('/post/edit/<int:id>', methods=['GET', 'POST'])
+def postEdit(id):
+    post = Post.query.get(id)
+    if not post:
+        return redirect(url_for('PostLista'))
+
+    form = EditPostForm(obj=post)
+    if form.validate_on_submit():
+        form.save(post_id=id)
+        return redirect(url_for('PostLista'))
+
+    return render_template('post_edit.html', form=form, post=post)
+
+@app.route('/turma/<int:id>', methods=['GET', 'POST'])
+def turmaDetail(id):
+    turma = Post.query.get(id)
+    atividade_form = AtividadeForm()
+    aluno_form = AlunoForm()
+
+    if atividade_form.validate_on_submit():
+        atividade_form.save(turma_id=id)
+        return redirect(url_for('turmaDetail', id=id))
+
+    if aluno_form.validate_on_submit():
+        aluno_form.save(turma_id=id)
+        return redirect(url_for('turmaDetail', id=id))
+
+    return render_template('turma_detail.html', turma=turma, atividade_form=atividade_form, aluno_form=aluno_form)
+
+@app.route('/aluno/delete/<int:id>', methods=['POST'])
+def alunoDelete(id):
+    aluno = Aluno.query.get(id)
+    if aluno:
+        db.session.delete(aluno)
+        db.session.commit()
+    return redirect(request.referrer)
+
+@app.route('/atividade/delete/<int:id>', methods=['POST'])
+def atividadeDelete(id):
+    atividade = Atividade.query.get(id)
+    if atividade:
+        db.session.delete(atividade)
+        db.session.commit()
+    return redirect(request.referrer)
+
+@app.route('/atividade/concluir/<int:id>', methods=['POST'])
+def atividadeConcluir(id):
+    atividade = Atividade.query.get(id)
+    if atividade:
+        db.session.delete(atividade)
+        db.session.commit()
+    return redirect(request.referrer)
