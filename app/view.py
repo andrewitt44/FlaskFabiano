@@ -86,7 +86,9 @@ def PostLista():
 @app.route('/post/<int:id>', methods=['GET', 'POST'])
 def postDetail(id):
     obj = Post.query.get(id)
+    turma = Turma.query.filter_by(post_id=id).first()  # Exemplo de busca da turma associada ao post
     form = ComentarioForm()
+
     if form.validate_on_submit():
         comentario = Comentario(
             text=form.text.data,
@@ -96,7 +98,9 @@ def postDetail(id):
         db.session.add(comentario)
         db.session.commit()
         return redirect(url_for('postDetail', id=id))
-    return render_template('post_detail.html', obj=obj, form=form)
+
+    return render_template('post_detail.html', obj=obj, form=form, turma=turma)
+
 
 
 @app.route('/post/delete/<int:id>', methods=['POST'])
@@ -159,3 +163,6 @@ def atividadeConcluir(id):
         db.session.delete(atividade)
         db.session.commit()
     return redirect(request.referrer)
+
+
+

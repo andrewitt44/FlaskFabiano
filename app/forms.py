@@ -121,3 +121,4 @@ class AtividadeForm(FlaskForm):
         atividade = Atividade(descricao=self.descricao.data, turma_id=turma_id)
         db.session.add(atividade)
         db.session.commit()
+

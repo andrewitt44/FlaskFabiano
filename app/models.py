@@ -55,3 +55,4 @@ class Atividade(db.Model):
 
 Post.alunos = db.relationship('Aluno', back_populates='turma', cascade='all, delete-orphan')
 Post.atividades = db.relationship('Atividade', back_populates='turma', cascade='all, delete-orphan')
+
