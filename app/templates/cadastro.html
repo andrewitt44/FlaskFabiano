@@ -1,30 +1,166 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container">
-            
-        <div class="row mt-4">
-            <h3>Envio de Contatos</h3>
-        </div>
-        <form action="" method="post" class="row mt-4 p-4 round border shadow">
-            {{form.csrf_token}}
-
-            {{form.nome.label()}}
-            {{form.nome(class="form-control")}}
-
-            {{form.sobrenome.label()}}
-            {{form.sobrenome(class="form-control")}}
-
-            {{form.email.label()}}
-            {{form.email(class="form-control")}}
-
-            {{form.senha.label()}}
-            {{form.senha(class="form-control")}}
-            
-            {{form.confirmacao_senha.label()}}
-            {{form.confirmacao_senha(class="form-control")}}
-
-            {{form.btnSubmit(class="btn btn-primary col-12 mt-3")}}
-        </form>
+<form action="" method="post" class="areaLogin">
+    <div class="ladoEsquerdo">
+        <img src="{{url_for('static', filename='../static/img/imagemInicio.png')}}" class="imagemEsquerda">
     </div>
+    <div class="ladoDireito">
+        <h3 class="bemVindo">BEM VINDO!</h3>
+        {{form.csrf_token}}
+
+        <div class="totalNome">
+            <div class="nomeForm">{{form.nome.label()}}</div>
+            <div class="nome">
+                <img src="{{url_for('static', filename='../static/img/logoArroba.png')}}">
+                {{form.nome(class="form-control")}}
+            </div>
+        </div>
+
+        <div class="totalSobrenome">
+            <div class="sobrenomeForm">{{form.sobrenome.label()}}</div>
+            <div class="sobrenome">
+                <img src="{{url_for('static', filename='../static/img/logoArroba.png')}}">
+                {{form.sobrenome(class="form-control")}}
+            </div>
+        </div>
+
+        <div class="totalEmail">
+            <div class="emailForm">{{form.email.label()}}</div>
+            <div class="email">
+                <img src="{{url_for('static', filename='../static/img/logoArroba.png')}}">
+                {{form.email(class="form-control")}}
+            </div>
+        </div>
+        <div class="totalSenha">
+            <div class="senhaForm">{{form.senha.label()}}</div>
+            <div class="senha">
+                <img src="{{url_for('static', filename='../static/img/senhaIcon.png')}}">
+                {{form.senha(class="form-control")}}
+            </div>
+        </div>
+
+        <div class="totalConfirmacaoSenha">
+            <div class="confirmacaoSenhaForm">{{form.confirmacao_senha.label()}}</div>
+            <div class="confirmacaoSenha">
+                <img src="{{url_for('static', filename='../static/img/senhaIcon.png')}}">
+                {{form.confirmacao_senha(class="form-control")}}
+            </div>
+        </div>
+
+        <div class="cadastro">
+            <div class="mt-4 mr-0"><a href="{{url_for('cadastro')}}" class="cadastrase">Cadastrar-se</a></div>
+            <div class="botaoForms">{{form.btnSubmit(class="btn btn-white")}}</div>
+        </div>
+    </div>
+</form>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+    
+    .cadastro {
+    display: flex;
+    justify-content: space-between;
+    }
+    .botaoForms {
+    background-color: white;
+    margin-top: 3%;
+    margin-right: 2rem;
+    border-radius: 100px;
+    border: 5px solid white;
+    padding: 0em 1em 0em 1em;
+    }
+    .totalEmail {
+    }
+    .emailForm {
+    font-size: 26px;
+    margin-left: 42%;
+    margin-bottom: 3%;
+    margin-top: 3%;
+    }
+    .email {
+    display: flex;
+    margin-right: 10%;
+    }
+    .totalSenha {
+    }
+    .senhaForm {
+    font-size: 26px;
+    margin-left: 42%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    }
+    .senha {
+    display: flex;
+    margin-right: 10%;
+    }
+    .confirmacaoSenhaForm {
+    font-size: 26px;
+    margin-left: 32%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    }
+    .confirmacaoSenha {
+    display: flex;
+    margin-right: 10%;
+    margin-bottom: 1rem;
+    }
+    .nomeForm {
+    font-size: 26px;
+    margin-left: 42%;
+    margin-top: 8%;
+    margin-bottom: 3%;
+    }
+    .nome {
+    display: flex;
+    margin-right: 10%;
+    }
+    .sobrenomeForm {
+    font-size: 26px;
+    margin-left: 35%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    }
+    .sobrenome {
+    display: flex;
+    margin-right: 10%;
+    }
+    .bemVindo{
+    text-align: center;
+    font-size: 50px;
+    margin-bottom: 30px;
+    margin-top: 50px;
+    }
+    .areaLogin {
+    margin-top: 5rem;
+    background-color: #0000;
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-evenly;
+    }
+    .cadastrase{
+    font-size: 26px;
+    font-family: "Montserrat", sans-serif;
+    text-decoration: none;
+    color: black;
+    margin-left: 2rem;
+    }
+    .imagemEsquerda {
+    margin-top: 15rem;
+    }
+    .ladoDireito {
+    margin-right: 0px;
+    width: 600px;
+    border-radius: 60px;
+    background-color: grey;
+    padding: 2rem;
+    }
+    img {
+    margin-right: 20px;
+    }
+    .form-control {
+    border-radius: 20px;
+    }
+    </style>
 {% endblock %}
+
