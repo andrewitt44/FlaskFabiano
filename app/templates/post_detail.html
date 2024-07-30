@@ -5,77 +5,53 @@
     {% include 'nave.html' %}
     <span class="btn btn-primary">{{current_user.nome}} {{current_user.sobrenome}}</span>
     <div class="row mt-4">
-        <h3>Turma: {{ turma.mensagem }}</h3>
+        <h3>Turma: {{ obj.mensagem }}</h3>
+        {% for linha in posts %}
+        <h3>{{linha.msg_resumo()}}</h3>
+        {% endfor %}
 
-        <div class="col-md-6 mt-4">
-            <h5>Atividades</h5>
-            <form method="POST" action="{{ url_for('turmaDetail', id=turma.id) }}">
-                {{ atividade_form.hidden_tag() }}
-                <div class="form-group">
-                    {{ atividade_form.descricao.label(class="form-label") }}
-                    {{ atividade_form.descricao(class="form-control") }}
-                </div>
-                <div class="form-group mt-2">
-                    {{ atividade_form.btnSubmit(class="btn btn-primary") }}
-                </div>
-            </form>
-            <table class="table mt-4">
+        <div class="col-12">
+            <table class="table">
                 <thead>
                     <tr>
-                        <th class="bg-light border border-dark">Descrição</th>
+                        <br>
+                        <th class="bg-light border border-dark">ID</th>
+                        <th class="bg-light border border-dark">Nome da atividade</th>
                         <th class="bg-light border border-dark">Ações</th>
                     </tr>
                 </thead>
-                <tbody>
-                    {% for atividade in turma.atividades %}
+                <body>
                     <tr>
-                        <td class="bg-light border border-dark">{{ atividade.descricao }}</td>
+                        {% for comentario in obj.comentarios %}
+                    <tr>
+                        <td class="bg-light border border-dark">{{ comentario.id }}</td>
+                        <td class="bg-light border border-dark">{{ comentario.text }}</td>
                         <td class="bg-light border border-dark">
-                            <form method="POST" action="{{ url_for('atividadeConcluir', id=atividade.id) }}" style="display:inline;">
-                                <button type="submit" class="btn btn-success">Concluir</button>
-                            </form>
-                            <form method="POST" action="{{ url_for('atividadeDelete', id=atividade.id) }}" style="display:inline;">
+                            <form action="{{ url_for('postDelete', id=comentario.id) }}" method="post">
                                 <button type="submit" class="btn btn-danger">Excluir</button>
+                                <a href="{{ url_for('postEdit', id=comentario.id) }}" class="btn btn-warning">Editar</a>
+                                <a href="{{ url_for('postDetail', id=comentario.id) }}" class="btn btn-success">Visualizar</a>
                             </form>
                         </td>
                     </tr>
                     {% endfor %}
-                </tbody>
+                    </tr>
+                </body>
             </table>
         </div>
-
-        <div class="col-md-6 mt-4">
-            <h5>Alunos</h5>
-            <form method="POST" action="{{ url_for('turmaDetail', id=turma.id) }}">
-                {{ aluno_form.hidden_tag() }}
+        
+        <div class="col-md-12 mt-4">
+            <h5>Cadastrar atividade</h5>
+            <form method="POST">
+                {{ form.hidden_tag() }}
                 <div class="form-group">
-                    {{ aluno_form.nome.label(class="form-label") }}
-                    {{ aluno_form.nome(class="form-control") }}
+                    {{ form.text.label(class="form-label") }}
+                    {{ form.text(class="form-control") }}
                 </div>
                 <div class="form-group mt-2">
-                    {{ aluno_form.btnSubmit(class="btn btn-primary") }}
+                    {{ form.submit(class="btn btn-primary") }}
                 </div>
             </form>
-            <table class="table mt-4">
-                <thead>
-                    <tr>
-                        <th class="bg-light border border-dark">Nome</th>
-                        <th class="bg-light border border-dark">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for aluno in turma.alunos %}
-                    <tr>
-                        <td class="bg-light border border-dark">{{ aluno.nome }}</td>
-                        <td class="bg-light border border-dark">
-                            <form method="POST" action="{{ url_for('alunoDelete', id=aluno.id) }}" style="display:inline;">
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
         </div>
 
     </div>

@@ -1,8 +1,10 @@
 from app import app, db
 from flask import render_template, url_for, request, redirect
-from app.forms import ComentarioForm, ContatoForm, UserForm, LoginForm, PostForm, EditPostForm
-from app.models import Comentario, Contato, User, Post
+from app.forms import ComentarioForm, ContatoForm, UserForm, LoginForm, PostForm
+from app.forms import ComentarioForm, ContatoForm, UserForm, LoginForm, PostForm, EditPostForm, EditAtividadeForm
+from app.models import Comentario, Contato, User, Post, Atividade
 from flask_login import login_user, logout_user, current_user
+
 
 
 
@@ -41,32 +43,6 @@ def logout():
     return redirect(url_for('homepage'))
 
 
-@app.route('/contato/', methods=['GET', 'POST'])
-def contato():
-    form = ContatoForm()
-    context = {}
-    if form.validate_on_submit():
-        form.save()
-        return redirect(url_for('homepage'))
-    return render_template('contato.html', context=context, form=form)
-
-
-@app.route('/contato/lista/')
-def contatoLista():
-    if request.method == 'GET':
-        pesquisa = request.args.get('pesquisa', '')
-    dados  = Contato.query.order_by('nome')
-    if pesquisa != '':
-        dados = dados.filter_by(nome=pesquisa)
-    context = {'dados': dados.all()}
-    return render_template('contato_lista.html', context=context)
-   
-@app.route('/contato/<int:id>')
-def contatoDetail(id):
-    obj = Contato.query.get(id)
-    return render_template('contato_detail.html', obj=obj)
-
-
 @app.route('/post/novo', methods=['GET', 'POST'])
 def PostNovo():
     form = PostForm()
@@ -86,9 +62,7 @@ def PostLista():
 @app.route('/post/<int:id>', methods=['GET', 'POST'])
 def postDetail(id):
     obj = Post.query.get(id)
-    turma = Turma.query.filter_by(post_id=id).first()  # Exemplo de busca da turma associada ao post
     form = ComentarioForm()
-
     if form.validate_on_submit():
         comentario = Comentario(
             text=form.text.data,
@@ -98,9 +72,7 @@ def postDetail(id):
         db.session.add(comentario)
         db.session.commit()
         return redirect(url_for('postDetail', id=id))
-
-    return render_template('post_detail.html', obj=obj, form=form, turma=turma)
-
+    return render_template('post_detail.html', obj=obj, form=form)
 
 
 @app.route('/post/delete/<int:id>', methods=['POST'])
@@ -124,45 +96,16 @@ def postEdit(id):
 
     return render_template('post_edit.html', form=form, post=post)
 
-@app.route('/turma/<int:id>', methods=['GET', 'POST'])
-def turmaDetail(id):
-    turma = Post.query.get(id)
-    atividade_form = AtividadeForm()
-    aluno_form = AlunoForm()
-
-    if atividade_form.validate_on_submit():
-        atividade_form.save(turma_id=id)
-        return redirect(url_for('turmaDetail', id=id))
-
-    if aluno_form.validate_on_submit():
-        aluno_form.save(turma_id=id)
-        return redirect(url_for('turmaDetail', id=id))
-
-    return render_template('turma_detail.html', turma=turma, atividade_form=atividade_form, aluno_form=aluno_form)
-
-@app.route('/aluno/delete/<int:id>', methods=['POST'])
-def alunoDelete(id):
-    aluno = Aluno.query.get(id)
-    if aluno:
-        db.session.delete(aluno)
-        db.session.commit()
-    return redirect(request.referrer)
-
-@app.route('/atividade/delete/<int:id>', methods=['POST'])
-def atividadeDelete(id):
+@app.route('/atividade/edit/<int:id>', methods=['GET', 'POST'])
+def atividadeEdit(id):
     atividade = Atividade.query.get(id)
-    if atividade:
-        db.session.delete(atividade)
-        db.session.commit()
-    return redirect(request.referrer)
+    if not atividade:
+        return redirect(url_for('PostDetail'))
 
-@app.route('/atividade/concluir/<int:id>', methods=['POST'])
-def atividadeConcluir(id):
-    atividade = Atividade.query.get(id)
-    if atividade:
-        db.session.delete(atividade)
-        db.session.commit()
-    return redirect(request.referrer)
+    form = EditAtividadeForm(obj=atividade)
+    if form.validate_on_submit():
+        form.save(atividade_id=id)
+        return redirect(url_for('PostDetail'))
 
-
+    return render_template('atividade_edit.html', form=form, atividade=atividade)
 

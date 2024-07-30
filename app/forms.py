@@ -103,6 +103,17 @@ class EditPostForm(FlaskForm):
             post.mensagem = self.mensagem.data
             db.session.commit()
         return post
+    
+class EditAtividadeForm(FlaskForm):
+    mensagem = StringField('Nome da atividade', validators=[DataRequired()])
+    btnSubmit = SubmitField('Atualizar')
+
+    def save(self, post_id):
+        atividade = atividade.query.get(post_id)
+        if atividade:
+            atividade.mensagem = self.mensagem.data
+            db.session.commit()
+        return atividade
 
 class AlunoForm(FlaskForm):
     nome = StringField('Nome do Aluno', validators=[DataRequired()])
