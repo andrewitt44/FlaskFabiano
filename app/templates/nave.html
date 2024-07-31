@@ -3,13 +3,14 @@
         <img src="{{url_for('static', filename='../static/img/LOGO SENAI.png')}}" height="80" width="80">
     </div>
     <div class="butonsHome">
-        <a href="/" class="btn btn-light">Início</a>
-        <a href="/" class="btn btn-light" >Sobre</a>
-        <a href="{{url_for('logout')}}" class="btn btn-danger">Sair</a>
+        <a href="/" class="btn btn-light" style="border-radius: 60px; padding: 0.5rem 1rem 0.5rem 1rem; margin-left: 1rem;">Início</a>
+        <a href="/" class="btn btn-light" style="border-radius: 60px; padding: 0.5rem 1rem 0.5rem 1rem; margin-left: 1rem;">Sobre</a>
+        <a href="{{url_for('logout')}}" class="btn btn-danger" style="border-radius: 60px; padding: 0.5rem 1rem 0.5rem 1rem; margin-left: 1rem;">Sair</a>
     </div>
 </div>
 
 <style>
+
     .butons {
         text-align: center;
         display: flex;

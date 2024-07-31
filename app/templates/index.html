@@ -6,8 +6,6 @@
     {% include 'nave.html' %}
     <div>
         {% if current_user.is_authenticated %}
-        <!-- <a href="{{url_for('logout')}}" class="btn btn-danger">Sair</a> -->
-        <!-- <a href="{{url_for('PostLista')}}"class="btn btn-success">Lista de turmas</a> -->
         <div class="Title">
             <h1 class="welcomeTitle">Bem-Vindo</h1>
             <hr class="welcomeHr">
@@ -15,12 +13,12 @@
         </div>
         <div class="optionsWelcome">    
             <div class="turmas">
-                <a href="{{url_for('PostLista')}}"><img src="{{url_for('static', filename='../static/img/logoTurmas.png')}}"></a>
+                <a href="{{url_for('TurmaLista')}}"><img src="{{url_for('static', filename='../static/img/logoTurmas.png')}}"></a>
                 <hr class="hrOpcoes">
                 <h1>Turmas</h1>
             </div>
             <div class="atividades">
-                <a href="{{url_for('PostLista')}}"><img src="{{url_for('static', filename='../static/img/logoAtividades.png')}}"></a>
+                <a href="{{url_for('TurmaLista')}}"><img src="{{url_for('static', filename='../static/img/logoAtividades.png')}}"></a>
                 <hr class="hrOpcoes">
                 <h1>Atividades</h1>
             </div>

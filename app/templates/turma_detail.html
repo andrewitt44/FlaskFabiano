@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    {% include 'nave.html' %}
+    <span class="btn btn-primary">{{ current_user.nome }} {{ current_user.sobrenome }}</span>
+    <div class="row mt-4">
+        <h3>Turma: {{ turma.nome }}</h3>
+
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <br>
+                        <th class="bg-light border border-dark">ID</th>
+                        <th class="bg-light border border-dark">Nome da Atividade</th>
+                        <th class="bg-light border border-dark">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for atividade in turma.atividades %}
+                    <tr>
+                        <td class="bg-light border border-dark">{{ atividade.id }}</td>
+                        <td class="bg-light border border-dark">{{ atividade.descricao }}</td>
+                        <td class="bg-light border border-dark">
+                            <form action="{{ url_for('atividadeDelete', id=atividade.id) }}" method="post">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                                <a href="{{ url_for('atividadeEdit', id=atividade.id) }}" class="btn btn-warning">Editar</a>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="col-md-12 mt-4">
+            <h5>Cadastrar atividade</h5>
+            <form method="POST" action="{{ url_for('atividade_novo', turma_id=turma.id) }}">
+                {{ form.hidden_tag() }}
+                <div class="form-group mt-2">
+                    {{ form.submit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
