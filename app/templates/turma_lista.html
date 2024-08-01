@@ -12,20 +12,20 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="bg-light border border-dark">Número</th>
-                        <th class="bg-light border border-dark">Nome da Turma</th>
-                        <th class="bg-light border border-dark">Ações</th>
+                        <th class="bg-light border border-dark" style="width: 8%; text-align: center; font-size: 30px; font-weight: 400;">Número</th>
+                        <th class="bg-light border border-dark" style="width: 30%; text-align: center; font-size: 30px; font-weight: 400;">Nome da Turma</th>
+                        <th class="bg-light border border-dark" style="width: 15%; text-align: center; font-size: 30px; font-weight: 400;">Ações</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for turma in turmas %}
                     <tr>
-                        <td class="bg-light border border-dark">{{ turma.id }}</td>
-                        <td class="bg-light border border-dark">{{ turma.nome }}</td>
+                        <td class="bg-light border border-dark" style="text-align: center; font-size: 20px;">{{ turma.id }}</td>
+                        <td class="bg-light border border-dark" style="text-align: center; font-size: 20px;">{{ turma.nome }}</td>
                         <td class="bg-light border border-dark">
-                            <form action="{{ url_for('turmaDelete', id=turma.id) }}" method="post">
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                                <a href="{{ url_for('turmaEdit', id=turma.id) }}" class="btn btn-warning">Editar</a>
+                            <form action="{{ url_for('turmaDelete', id=turma.id) }}" method="post" style="text-align: center;">
+                                <button type="submit" class="btn btn-danger" style="margin-left: 1rem;">Excluir</button>
+                                <a href="{{ url_for('turmaEdit', id=turma.id) }}" class="btn btn-warning" style="margin-left: 2.3rem; margin-right: 2rem">Editar</a>
                                 <a href="{{ url_for('turmaDetail', id=turma.id) }}" class="btn btn-success">Visualizar</a>
                             </form>
                         </td>
@@ -34,7 +34,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="cadastro">
+        <div class="cadastro" style="text-align: left; display: flex; gap: 33.4%">
+            <a href="{{ url_for('TurmaNovo') }}" class="btn btn-secondary col-1 mt-3">Voltar</a><br>
             <a href="{{ url_for('TurmaNovo') }}" class="btn btn-primary col-3 mt-3">Cadastrar turma</a><br>
         </div>
     </div>

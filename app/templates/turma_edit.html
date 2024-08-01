@@ -6,22 +6,67 @@
     <h3 class="titulo">Editar Turma<br></h3>
     <hr class="hrTituloTurmas">
 
-    <div class="col-12">
-        <form method="POST" action="{{ url_for('turmaEdit', id=turma.id) }}">
-            {{ form.hidden_tag() }}
-            <div class="form-group">
-                {{ form.nome.label(class="form-label") }}
-                {{ form.nome(class="form-control") }}
-            </div>
-            <div class="form-group">
-                {{ form.btnSubmit(class="btn btn-primary") }}
-            </div>
-        </form>
+    <div class="formsEdit">
+        <div class="imgEdit">
+            <img src="{{url_for('static', filename='../static/img/imageEdit.jpg')}}" style="width: 400px; border-radius: 20px; text-align: center">
+        </div>
+        <div class="forms">
+            <form method="POST" action="{{ url_for('turmaEdit', id=turma.id) }}" class="nomeTurma">
+                {{ form.hidden_tag() }}
+                <div class="form-group" style="font-size: 50px; text-align: center;">
+                    {{ form.nome.label(class="form-label") }}
+                    {{ form.nome(class="form-control") }}
+                </div>
+                <div class="form-group" style="margin-top: 5rem; text-align: center;">
+                    {{ form.btnSubmit(class="btn btn-primary") }}
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+    .forms {
+        width: 30rem;
+        height: 37.5rem;
+        margin-right: 3rem;
+        border: 2px solid black;
+        border-radius: 20px;
+        padding: 2rem;
+    }
+
+    .imgEdit {
+        text-align: center;
+        margin-right: 100px;
+    }
+
+    .formsEdit {
+        display: flex;
+        justify-content: space-between;
+        margin: 4rem 12rem 0rem 12rem;
+        align-items: center;
+    }
+
+    .nomeTurma {
+        font-family: 'Montserrat', sans-serif;
+        margin-right: 0;
+        padding-right: 0;
+    }
+
+    .form-control {
+        border-radius: 30px;
+    }
+
+    .form-label {
+        margin-bottom: 5rem;
+        margin-top: 3rem;
+    }
+
+    .btn-primary {
+        border-radius: 30px;
+    }
 
     .titulo {
         text-align: center;

@@ -77,7 +77,7 @@ class ComentarioForm(FlaskForm):
     submit = SubmitField('Adicionar atividade')
 
 class EditTurmaForm(FlaskForm):
-    nome = StringField('Nome da turma', validators=[DataRequired()])
+    nome = StringField('Insira o novo nome da turma', validators=[DataRequired()])
     btnSubmit = SubmitField('Atualizar')
 
     def save(self, turma_id):
