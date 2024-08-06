@@ -7,9 +7,6 @@
     <hr class="hrTituloTurmas">
 
     <div class="formsEdit">
-        <div class="imgEdit">
-            <img src="{{url_for('static', filename='../static/img/imageEdit.jpg')}}" style="width: 400px; border-radius: 20px; text-align: center">
-        </div>
         <div class="forms">
             <form method="POST" action="{{ url_for('turmaEdit', id=turma.id) }}" class="nomeTurma">
                 {{ form.hidden_tag() }}
@@ -17,8 +14,16 @@
                     {{ form.nome.label(class="form-label") }}
                     {{ form.nome(class="form-control") }}
                 </div>
-                <div class="form-group" style="margin-top: 5rem; text-align: center;">
-                    {{ form.btnSubmit(class="btn btn-primary") }}
+                <div class="form-group" style="margin-top: 3rem; text-align: center; margin-bottom: 2rem;">
+                    <div class="voltar">
+                        <button id="backBtn" style="text-decoration: none; padding-right: 2rem; padding-left: 2rem; border-radius: 30px; margin-top: 1rem; margin-right: 12rem">Voltar</button>
+                        <script>
+                        document.getElementById("backBtn").addEventListener("click", function(){
+                            history.back();
+                        });
+                        </script>
+                        {{ form.btnSubmit(class="btn btn-primary") }}
+                    </div>
                 </div>
             </form>
         </div>
@@ -30,22 +35,16 @@
 
     .forms {
         width: 30rem;
-        height: 37.5rem;
-        margin-right: 3rem;
+        margin-right: 2rem;
         border: 2px solid black;
         border-radius: 20px;
-        padding: 2rem;
-    }
-
-    .imgEdit {
-        text-align: center;
-        margin-right: 100px;
+        padding: 2rem 2rem 0 2rem;
     }
 
     .formsEdit {
         display: flex;
-        justify-content: space-between;
-        margin: 4rem 12rem 0rem 12rem;
+        justify-content: center;
+        margin: 0 auto;
         align-items: center;
     }
 
@@ -60,8 +59,8 @@
     }
 
     .form-label {
-        margin-bottom: 5rem;
-        margin-top: 3rem;
+        margin-bottom: 2rem;
+        margin-top: 0rem;
     }
 
     .btn-primary {
