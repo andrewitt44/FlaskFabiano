@@ -25,7 +25,8 @@
                         <td class="bg-light border border-dark">
                             <form action="{{ url_for('atividadeDelete', id=atividade.id) }}" method="post">
                                 <button type="submit" class="btn btn-danger">Excluir</button>
-                                <a href="{{ url_for('atividadeEdit', id=atividade.id) }}" class="btn btn-warning">Editar</a>
+                                <a href="{{ url_for('atividadeEdit', id=atividade.id) }}"
+                                    class="btn btn-warning">Editar</a>
                             </form>
                         </td>
                     </tr>
@@ -33,9 +34,15 @@
                 </tbody>
             </table>
         </div>
-        
-        <div class="col-md-12 mt-4">
-            <h5>Cadastrar atividade</h5>
+
+        <div class="col-md-12 mt-4" style="display: flex; justify-content: space-between;">
+            <button id="backBtn"
+                style="text-decoration: none; padding-right: 2rem; padding-left: 2rem; border-radius: 30px; margin-top: 1rem">Voltar</button>
+            <script>
+                document.getElementById("backBtn").addEventListener("click", function () {
+                    history.back();
+                });
+            </script>
             <form method="POST" action="{{ url_for('atividade_novo', turma_id=turma.id) }}">
                 {{ form.hidden_tag() }}
                 <div class="form-group mt-2">

@@ -8,27 +8,28 @@
         {% if current_user.is_authenticated %}
         <div class="Title">
             <h1 class="welcomeTitle">Bem-Vindo</h1>
-            <hr class="welcomeHr">
+            <hr class="welcomeHr" style="margin-left: auto; margin-right: auto; width: 350px;">
             <p class="welcomeText">Gerenciamos suas turmas de mecânica, facilitando a educação e simplificando a gestão.</p>
         </div>
-        <div class="optionsWelcome">    
+        <div class="optionsWelcome"> 
+            <!-- row row-cols-2 row-cols-md-4 row-cols-lg-4    -->
             <div class="turmas">
-                <a href="{{url_for('TurmaLista')}}"><img src="{{url_for('static', filename='../static/img/logoTurmas.png')}}"></a>
+                <a href="{{url_for('TurmaLista')}}"><img src="{{url_for('static', filename='../static/img/logoTurmas.png')}}" style="margin-left: auto; margin-right: auto;"></a>
                 <hr class="hrOpcoes">
                 <h1>Turmas</h1>
             </div>
             <div class="atividades">
-                <a href="{{url_for('TurmaLista')}}"><img src="{{url_for('static', filename='../static/img/logoAtividades.png')}}"></a>
+                <a href="{{url_for('TurmaLista')}}"><img src="{{url_for('static', filename='../static/img/logoAtividades.png')}}" style="margin-left: auto; margin-right: auto; padding-left: 5%"></a>
                 <hr class="hrOpcoes">
                 <h1>Atividades</h1>
             </div>
             <div class="maquinas">
-                <a href="/"><img src="{{url_for('static', filename='../static/img/logoMaquinas.png')}}"></a>
+                <a href="/"><img src="{{url_for('static', filename='../static/img/logoMaquinas.png')}}" style="margin-left: auto; margin-right: auto; padding-left: 10%;"></a>
                 <hr class="hrOpcoes">
                 <h1>Máquinas</h1>
             </div>
             <div class="alunos">
-                <a href="/"><img src="{{url_for('static', filename='../static/img/logoAlunos.png')}}"></a>
+                <a href="/"><img src="{{url_for('static', filename='../static/img/logoAlunos.png')}}" style="margin-left: auto; margin-right: auto;"></a>
                 <hr class="hrOpcoes">
                 <h1>Alunos</h1>
             </div>
@@ -42,7 +43,6 @@
             }
             .welcomeHr {
                 width: 25%;
-                margin-left: 410px;
                 border: 4px solid black;
             }
             .welcomeTitle {
@@ -57,6 +57,7 @@
                 font-weight: 400;
                 margin-right: 17vw;
                 margin-left: 17vw;
+                /* margin-bottom: 7vw; */
             }
 
             .optionsWelcome {
@@ -68,8 +69,9 @@
             }
 
             .hrOpcoes {
-                width: 60%;
-                margin-left: 20px;
+                width: 100px;
+                margin-left: auto;
+                margin-right: auto;
                 border: 4px solid black;
             }
         </style>

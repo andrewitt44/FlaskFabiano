@@ -34,15 +34,13 @@
                 </tbody>
             </table>
         </div>
-        <div class="cadastro" style="text-align: left; display: flex; gap: 64%; align-items: center; margin-bottom: 2rem;">
-            <div class="voltar">
+        <div class="cadastro" style="text-align: left; display: flex; gap: 66.7%; align-items: center; margin-bottom: 2rem;">
                 <button id="backBtn" style="text-decoration: none; padding-right: 2rem; padding-left: 2rem; border-radius: 30px; margin-top: 1rem">Voltar</button>
                 <script>
                 document.getElementById("backBtn").addEventListener("click", function(){
                     history.back();
                 });
                 </script>
-            </div>
             <a href="{{ url_for('TurmaNovo') }}" class="btn btn-primary col-3 mt-3">Cadastrar turma</a><br>
         </div>
     </div>
