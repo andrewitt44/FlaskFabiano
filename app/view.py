@@ -66,8 +66,7 @@ def turmaDetail(id):
 def turmaDelete(id):
     turma = Turma.query.get(id)
     if turma:
-        db.session.delete(turma)
-        db.session.commit()
+        turma.delete()  # Usando o método delete da classe Turma
     return redirect(url_for('TurmaLista'))
 
 @app.route('/turma/edit/<int:id>', methods=['GET', 'POST'])
@@ -98,10 +97,8 @@ def atividadeEdit(id):
 def atividadeDelete(id):
     atividade = Atividade.query.get(id)
     if atividade:
-        turma_id = atividade.turma_id
-        db.session.delete(atividade)
-        db.session.commit()
-        return redirect(url_for('turmaDetail', id=turma_id))
+        atividade.delete()  # Usando o método delete da classe Atividade
+        return redirect(url_for('turmaDetail', id=atividade.turma_id))
 
     return redirect(url_for('TurmaLista'))
 

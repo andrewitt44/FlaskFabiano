@@ -33,8 +33,18 @@ class Turma(db.Model):
     alunos = db.relationship('Aluno', back_populates='turma', cascade='all, delete-orphan')
     atividades = db.relationship('Atividade', back_populates='turma', cascade='all, delete-orphan')
 
-    def msg_resumo(self):
-        return f"{self.nome[:10]} ..."
+    @staticmethod
+    def realinhar_ids():
+        turmas = Turma.query.order_by(Turma.id).all()
+        for idx, turma in enumerate(turmas, start=1):
+            turma.id = idx
+            db.session.add(turma)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        Turma.realinhar_ids()
 
 class Comentario(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -54,3 +64,24 @@ class Atividade(db.Model):
     descricao = db.Column(db.String, nullable=False)
     turma_id = db.Column(db.Integer, db.ForeignKey('turma.id'), nullable=True)
     turma = db.relationship('Turma', back_populates='atividades')
+    atividade_numero = db.Column(db.Integer, nullable=False)
+
+    def save(self):
+        max_numero = Atividade.query.filter_by(turma_id=self.turma_id).count()
+        self.atividade_numero = max_numero + 1
+        db.session.add(self)
+        db.session.commit()
+
+    @staticmethod
+    def realinhar_ids(turma_id):
+        atividades = Atividade.query.filter_by(turma_id=turma_id).order_by(Atividade.atividade_numero).all()
+        for idx, atividade in enumerate(atividades, start=1):
+            atividade.atividade_numero = idx
+            db.session.add(atividade)
+        db.session.commit()
+
+    def delete(self):
+        turma_id = self.turma_id
+        db.session.delete(self)
+        db.session.commit()
+        Atividade.realinhar_ids(turma_id)

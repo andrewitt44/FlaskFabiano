@@ -95,9 +95,8 @@ class EditAtividadeForm(FlaskForm):
         atividade = Atividade.query.get(atividade_id)
         if atividade:
             atividade.descricao = self.descricao.data
-            db.session.commit()
+            atividade.save()  # Atualizando para usar o método save() do modelo
         return atividade
-
 
 class AlunoForm(FlaskForm):
     nome = StringField('Nome do Aluno', validators=[DataRequired()])
@@ -113,6 +112,8 @@ class AtividadeForm(FlaskForm):
     btnSubmit = SubmitField('Adicionar Atividade')
 
     def save(self, turma_id):
-        atividade = Atividade(descricao=self.descricao.data, turma_id=turma_id)
-        db.session.add(atividade)
-        db.session.commit()
+        atividade = Atividade(
+            descricao=self.descricao.data,
+            turma_id=turma_id
+        )
+        atividade.save()  # Usando o método save() do modelo para gerar o número da atividade
