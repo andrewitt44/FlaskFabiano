@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from app import db, bcrypt
-from app.models import Contato, User, Turma, Atividade, Aluno
+from app.models import Contato, User, Turma, Atividade, Aluno, Maquina
 
 class UserForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
@@ -117,3 +117,30 @@ class AtividadeForm(FlaskForm):
             turma_id=turma_id
         )
         atividade.save()  # Usando o método save() do modelo para gerar o número da atividade
+
+class MaquinaForm(FlaskForm):
+    nome = StringField('Nome da máquina', validators=[DataRequired()])
+    descricao = TextAreaField('Descrição', validators=[DataRequired()])
+    btnSubmit = SubmitField('Enviar')
+
+    def save(self, turma_id):
+        maquina = Maquina(
+            nome=self.nome.data,
+            descricao=self.descricao.data,
+            turma_id=turma_id
+        )
+        db.session.add(maquina)
+        db.session.commit()
+
+class EditMaquinaForm(FlaskForm):
+    nome = StringField('Insira o novo nome da máquina', validators=[DataRequired()])
+    descricao = TextAreaField('Insira a nova descrição', validators=[DataRequired()])
+    btnSubmit = SubmitField('Atualizar')
+
+    def save(self, maquina_id):
+        maquina = Maquina.query.get(maquina_id)
+        if maquina:
+            maquina.nome = self.nome.data
+            maquina.descricao = self.descricao.data
+            db.session.commit()
+        return maquina

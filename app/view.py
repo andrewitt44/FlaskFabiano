@@ -1,7 +1,7 @@
 from app import app, db
-from flask import render_template, url_for, request, redirect
-from app.forms import ComentarioForm, ContatoForm, UserForm, LoginForm, TurmaForm, EditTurmaForm, EditAtividadeForm
-from app.models import Comentario, Contato, User, Turma, Atividade
+from flask import render_template, url_for, request, redirect, flash
+from app.forms import ComentarioForm, UserForm, LoginForm, TurmaForm, EditTurmaForm, EditAtividadeForm, MaquinaForm, EditMaquinaForm
+from app.models import Comentario, Turma, Atividade, Maquina
 from flask_login import login_user, logout_user, current_user
 
 @app.route('/', methods=['GET', 'POST'])
@@ -117,3 +117,37 @@ def atividade_novo(turma_id):
         return redirect(url_for('turmaDetail', id=turma_id))
 
     return render_template('atividade_novo.html', form=form, turma=turma)
+
+@app.route('/maquinas')
+def listar_maquinas():
+    maquinas = Maquina.query.all()
+    return render_template('listar_maquinas.html', maquinas=maquinas)
+
+@app.route('/maquinas/nova', methods=['GET', 'POST'])
+def nova_maquina():
+    form = MaquinaForm()
+    if form.validate_on_submit():
+        turma_id = request.args.get('turma_id')
+        form.save(turma_id)
+        flash('Máquina criada com sucesso!')
+        return redirect(url_for('listar_maquinas'))
+    return render_template('nova_maquina.html', form=form)
+
+@app.route('/maquinas/editar/<int:maquina_id>', methods=['GET', 'POST'])
+def editar_maquina(maquina_id):
+    maquina = Maquina.query.get_or_404(maquina_id)
+    form = EditMaquinaForm(obj=maquina)
+    if form.validate_on_submit():
+        form.save(maquina_id)
+        flash('Máquina atualizada com sucesso!')
+        return redirect(url_for('listar_maquinas'))
+    return render_template('editar_maquina.html', form=form, maquina=maquina)
+
+@app.route('/excluir_maquina/<int:maquina_id>', methods=['POST'])
+def excluir_maquina(maquina_id):
+    maquina = Maquina.query.get_or_404(maquina_id)
+    maquina.delete()
+    flash('Máquina excluída com sucesso!')
+    return redirect(url_for('listar_maquinas'))
+
+

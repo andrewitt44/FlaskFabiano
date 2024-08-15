@@ -66,9 +66,13 @@ class Atividade(db.Model):
     turma = db.relationship('Turma', back_populates='atividades')
     atividade_numero = db.Column(db.Integer, nullable=False)
 
-    def save(self):
-        max_numero = Atividade.query.filter_by(turma_id=self.turma_id).count()
+    def __init__(self, descricao, turma_id):
+        self.descricao = descricao
+        self.turma_id = turma_id
+        max_numero = Atividade.query.filter_by(turma_id=turma_id).count()
         self.atividade_numero = max_numero + 1
+
+    def save(self):
         db.session.add(self)
         db.session.commit()
 
@@ -85,3 +89,23 @@ class Atividade(db.Model):
         db.session.delete(self)
         db.session.commit()
         Atividade.realinhar_ids(turma_id)
+
+class Maquina(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    nome = db.Column(db.String, nullable=False)
+    descricao = db.Column(db.String, nullable=True)
+    data_criacao = db.Column(db.DateTime, default=datetime.now())
+    turma_id = db.Column(db.Integer, db.ForeignKey('turma.id'), nullable=True)
+    
+    @staticmethod
+    def realinhar_ids():
+        maquinas = Maquina.query.order_by(Maquina.id).all()
+        for idx, maquina in enumerate(maquinas, start=1):
+            maquina.id = idx
+            db.session.add(maquina)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+        Maquina.realinhar_ids()
