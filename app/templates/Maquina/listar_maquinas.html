@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    {% include 'nave.html' %}
+    <span class="btn btn-primary">Professor: {{ current_user.nome }} {{ current_user.sobrenome }}</span>
+    <div class="row mt-4">
+        <h3 class="titulo">Lista de Máquinas<br></h3>
+        <hr class="hrTituloTurmas">
+
+        <div class="col-12">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="bg-light border border-dark"
+                            style="width: 8%; text-align: center; font-size: 30px; font-weight: 400;">Número</th>
+                        <th class="bg-light border border-dark"
+                            style="width: 30%; text-align: center; font-size: 30px; font-weight: 400;">Nome da Máquina
+                        </th>
+                        <th class="bg-light border border-dark"
+                            style="width: 30%; text-align: center; font-size: 30px; font-weight: 400;">Descrição</th>
+                        <th class="bg-light border border-dark"
+                            style="width: 15%; text-align: center; font-size: 30px; font-weight: 400;">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for maquina in maquinas %}
+                    <tr>
+                        <td class="bg-light border border-dark" style="text-align: center; font-size: 20px;">{{
+                            maquina.id }}</td>
+                        <td class="bg-light border border-dark" style="text-align: center; font-size: 20px;">{{
+                            maquina.nome }}</td>
+                        <td class="bg-light border border-dark" style="text-align: center; font-size: 20px;">{{
+                            maquina.descricao }}</td>
+                        <td class="bg-light border border-dark">
+                            <form action="{{ url_for('excluir_maquina', maquina_id=maquina.id) }}" method="post"
+                                style="text-align: center;">
+                                <button type="submit" class="btn btn-danger" style="margin-left: 0rem;">Excluir</button>
+                                <a href="{{ url_for('editar_maquina', maquina_id=maquina.id) }}" class="btn btn-warning"
+                                    style="margin-left: 1rem; margin-right: 1rem">Editar</a>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="cadastro"
+            style="text-align: left; display: flex; gap: 66.7%; align-items: center; margin-bottom: 2rem;">
+            <button id="backBtn"
+                style="text-decoration: none; padding-right: 2rem; padding-left: 2rem; border-radius: 30px; margin-top: 1rem">Voltar</button>
+            <script>
+                document.getElementById("backBtn").addEventListener("click", function () {
+                    history.back();
+                });
+            </script>
+            <a href="{{ url_for('nova_maquina') }}" class="btn btn-primary col-3 mt-3">Cadastrar Máquina</a><br>
+        </div>
+    </div>
+</div>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+    .titulo {
+        text-align: center;
+        font-size: 50px;
+        font-family: "Montserrat", sans-serif;
+        margin-top: 3%;
+        margin-bottom: 1%;
+    }
+
+    .backBtn {
+        padding: 1rem 0.5rem 1rem 0.5rem;
+        color: aqua;
+    }
+
+    .cadastro {
+        text-align: right;
+    }
+
+    .hrTituloTurmas {
+        width: 30%;
+        margin-left: 35%;
+        margin-bottom: 2%;
+        border: 4px solid black;
+    }
+</style>
+
+{% endblock %}

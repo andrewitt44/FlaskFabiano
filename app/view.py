@@ -1,33 +1,37 @@
 from app import app, db
-from flask import render_template, url_for, request, redirect, flash
-from app.forms import ComentarioForm, UserForm, LoginForm, TurmaForm, EditTurmaForm, EditAtividadeForm, MaquinaForm, EditMaquinaForm
-from app.models import Comentario, Turma, Atividade, Maquina
+from flask import render_template, url_for, request, redirect, flash, session
+from app.forms import ComentarioForm, UserForm, LoginForm, TurmaForm, EditTurmaForm, EditAtividadeForm, MaquinaForm, EditMaquinaForm, AlunoForm, EditAlunoForm
+from app.models import Comentario, Turma, Atividade, Maquina, Aluno
 from flask_login import login_user, logout_user, current_user
+import os
+
+@app.before_request
+def before_request():
+    if 'app_initiated' not in session:
+        session['app_initiated'] = True
+        if current_user.is_authenticated:
+            logout_user()
+        return redirect(url_for('homepage'))
 
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
-    usuario = 'Mateus'
-    idade = 17
     form = LoginForm()
 
     if form.validate_on_submit():
         user = form.login()
         login_user(user, remember=True)
+        return redirect(url_for('homepage')) 
 
-    context = {
-        'usuario': usuario,
-        'idade': idade
-    }
-    return render_template('index.html', context=context, form=form)
+    return render_template('Codes/index.html', form=form)
 
 @app.route('/cadastro/', methods=['GET', 'POST'])
 def cadastro():
     form = UserForm()
     if form.validate_on_submit():
         user = form.save()
-        login_user(user, remember=True)
+        flash('Cadastro realizado com sucesso! Por favor, faça o login para continuar.')
         return redirect(url_for('homepage'))
-    return render_template('cadastro.html', form=form)
+    return render_template('Codes/cadastro.html', form=form)
 
 @app.route('/sair/')
 def logout():
@@ -40,12 +44,12 @@ def TurmaNovo():
     if form.validate_on_submit():
         form.save(current_user.id)
         return redirect(url_for('TurmaLista'))
-    return render_template('turma_novo.html', form=form)
+    return render_template('Turma/turma_novo.html', form=form)
 
 @app.route('/turma/lista')
 def TurmaLista():
     turmas = Turma.query.all()
-    return render_template('turma_lista.html', turmas=turmas)
+    return render_template('Turma/turma_lista.html', turmas=turmas)
 
 @app.route('/turma/<int:id>', methods=['GET', 'POST'])
 def turmaDetail(id):
@@ -60,7 +64,7 @@ def turmaDetail(id):
         db.session.add(comentario)
         db.session.commit()
         return redirect(url_for('turmaDetail', id=id))
-    return render_template('turma_detail.html', turma=turma, form=form)
+    return render_template('Turma/turma_detail.html', turma=turma, form=form)
 
 @app.route('/turma/delete/<int:id>', methods=['POST'])
 def turmaDelete(id):
@@ -80,7 +84,7 @@ def turmaEdit(id):
         form.save(turma_id=id)
         return redirect(url_for('TurmaLista'))
 
-    return render_template('turma_edit.html', form=form, turma=turma)
+    return render_template('Turma/turma_edit.html', form=form, turma=turma)
 
 @app.route('/atividade_edit/<int:id>', methods=['GET', 'POST'])
 def atividadeEdit(id):
@@ -91,7 +95,7 @@ def atividadeEdit(id):
         return redirect(url_for('turmaDetail', id=atividade.turma_id))
     elif request.method == 'GET':
         form.descricao.data = atividade.descricao
-    return render_template('atividade_edit.html', form=form, atividade=atividade)
+    return render_template('Turma/atividade_edit.html', form=form, atividade=atividade)
 
 @app.route('/atividade/delete/<int:id>', methods=['POST'])
 def atividadeDelete(id):
@@ -116,12 +120,12 @@ def atividade_novo(turma_id):
         db.session.commit()
         return redirect(url_for('turmaDetail', id=turma_id))
 
-    return render_template('atividade_novo.html', form=form, turma=turma)
+    return render_template('Turma/atividade_novo.html', form=form, turma=turma)
 
 @app.route('/maquinas')
 def listar_maquinas():
     maquinas = Maquina.query.all()
-    return render_template('listar_maquinas.html', maquinas=maquinas)
+    return render_template('Maquina/listar_maquinas.html', maquinas=maquinas)
 
 @app.route('/maquinas/nova', methods=['GET', 'POST'])
 def nova_maquina():
@@ -131,7 +135,7 @@ def nova_maquina():
         form.save(turma_id)
         flash('Máquina criada com sucesso!')
         return redirect(url_for('listar_maquinas'))
-    return render_template('nova_maquina.html', form=form)
+    return render_template('Maquina/nova_maquina.html', form=form)
 
 @app.route('/maquinas/editar/<int:maquina_id>', methods=['GET', 'POST'])
 def editar_maquina(maquina_id):
@@ -141,7 +145,7 @@ def editar_maquina(maquina_id):
         form.save(maquina_id)
         flash('Máquina atualizada com sucesso!')
         return redirect(url_for('listar_maquinas'))
-    return render_template('editar_maquina.html', form=form, maquina=maquina)
+    return render_template('Maquina/editar_maquina.html', form=form, maquina=maquina)
 
 @app.route('/excluir_maquina/<int:maquina_id>', methods=['POST'])
 def excluir_maquina(maquina_id):
@@ -150,4 +154,35 @@ def excluir_maquina(maquina_id):
     flash('Máquina excluída com sucesso!')
     return redirect(url_for('listar_maquinas'))
 
+@app.route('/alunos')
+def listar_alunos():
+    alunos = Aluno.query.all()
+    return render_template('Aluno/listar_alunos.html', alunos=alunos)
 
+@app.route('/alunos/novo', methods=['GET', 'POST'])
+def aluno_novo():
+    form = AlunoForm()
+    if form.validate_on_submit():
+        turma_id = request.args.get('turma_id')
+        form.save(turma_id)
+        flash('Aluno criado com sucesso!')
+        return redirect(url_for('listar_alunos'))
+    return render_template('Aluno/aluno_novo.html', form=form)
+
+@app.route('/alunos/editar/<int:aluno_id>', methods=['GET', 'POST'])
+def editar_aluno(aluno_id):
+    aluno = Aluno.query.get_or_404(aluno_id)
+    form = EditAlunoForm(obj=aluno)
+    if form.validate_on_submit():
+        form.save(aluno_id)
+        flash('Aluno atualizado com sucesso!')
+        return redirect(url_for('listar_alunos'))
+    return render_template('Aluno/editar_aluno.html', form=form, aluno=aluno)
+
+@app.route('/excluir_aluno/<int:aluno_id>', methods=['POST'])
+def excluir_aluno(aluno_id):
+    aluno = Aluno.query.get_or_404(aluno_id)
+    db.session.delete(aluno)
+    db.session.commit()
+    flash('Aluno excluído com sucesso!')
+    return redirect(url_for('listar_alunos'))

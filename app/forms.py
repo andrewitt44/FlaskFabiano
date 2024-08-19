@@ -3,18 +3,22 @@ from wtforms import StringField, SubmitField, PasswordField, TextAreaField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
 from app import db, bcrypt
 from app.models import Contato, User, Turma, Atividade, Aluno, Maquina
+from flask import flash
+from markupsafe import Markup
+
 
 class UserForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
     sobrenome = StringField('Sobrenome', validators=[DataRequired()])
     email = StringField('E-mail', validators=[DataRequired(), Email()])
     senha = PasswordField('Senha', validators=[DataRequired()])
-    confirmacao_senha = PasswordField('Confimar senha', validators=[DataRequired(), EqualTo('senha')])
+    confirmacao_senha = PasswordField('Confirmar senha', validators=[DataRequired(), EqualTo('senha')])
     btnSubmit = SubmitField('Cadastrar')
 
     def validade_email(self, email):
         if User.query.filter_by(email=email.data).first():
-            raise ValidationError('Usuário já cadastrado com esse E-mail!!!')
+            raise ValidationError(Markup('<div class="modal">Usuário já cadastrado com esse E-mail!!!</div>'))
+
 
     def save(self):
         senha = bcrypt.generate_password_hash(self.senha.data.encode('utf-8'))
@@ -27,6 +31,7 @@ class UserForm(FlaskForm):
         db.session.add(user)
         db.session.commit()
         return user
+
 
 class ContatoForm(FlaskForm):
     nome = StringField('Nome', validators=[DataRequired()])
@@ -56,9 +61,9 @@ class LoginForm(FlaskForm):
             if bcrypt.check_password_hash(user.senha, self.senha.data.encode('utf-8')):
                 return user
             else:
-                raise Exception('Senha Incorreta!!!')
+                raise ValidationError(Markup('<div class="modal">Senha Incorreta!!!</div>'))
         else:
-            raise Exception('Usuário não encontrado')
+            raise ValidationError(Markup('<div class="modal">Usuário não encontrado</div>'))
 
 class TurmaForm(FlaskForm):
     nome = StringField('Nome da turma', validators=[DataRequired()])
@@ -106,6 +111,17 @@ class AlunoForm(FlaskForm):
         aluno = Aluno(nome=self.nome.data, turma_id=turma_id)
         db.session.add(aluno)
         db.session.commit()
+
+class EditAlunoForm(FlaskForm):
+    nome = StringField('Insira o novo nome do aluno', validators=[DataRequired()])
+    btnSubmit = SubmitField('Atualizar')
+
+    def save(self, aluno_id):
+        aluno = Aluno.query.get(aluno_id)
+        if aluno:
+            aluno.nome = self.nome.data
+            db.session.commit()
+        return aluno
 
 class AtividadeForm(FlaskForm):
     descricao = StringField('Descrição da Atividade', validators=[DataRequired()])
