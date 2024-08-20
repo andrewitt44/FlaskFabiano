@@ -19,7 +19,6 @@ class UserForm(FlaskForm):
         if User.query.filter_by(email=email.data).first():
             raise ValidationError(Markup('<div class="modal">Usuário já cadastrado com esse E-mail!!!</div>'))
 
-
     def save(self):
         senha = bcrypt.generate_password_hash(self.senha.data.encode('utf-8'))
         user = User(

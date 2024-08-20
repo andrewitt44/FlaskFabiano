@@ -1,35 +1,29 @@
-{% extends 'base.html' %}
+{% extends "Codes/base.html" %}
 
 {% block content %}
 <div class="container">
 
-    {% include 'nave.html' %}
+    {% include 'Codes/nave.html' %}
     <div>
         {% if current_user.is_authenticated %}
         <div class="Title">
             <h1 class="welcomeTitle">Bem-Vindo</h1>
             <hr class="welcomeHr" style="margin-left: auto; margin-right: auto; width: 350px;">
-            <p class="welcomeText">Gerenciamos suas turmas de mecânica, facilitando a educação e simplificando a gestão.
-            </p>
+            <p class="welcomeText">Gerenciamos suas turmas de mecânica, facilitando a educação e simplificando a gestão.</p>
         </div>
         <div class="optionsWelcome">
             <div class="turmas">
-                <a href="{{url_for('TurmaLista')}}"><img
-                        src="{{url_for('static', filename='img/logoTurmas.png')}}"
-                        style="margin-left: auto; margin-right: auto;"></a>
+                <a href="{{url_for('TurmaLista')}}"><img src="{{url_for('static', filename='img/logoTurmas.png')}}" style="margin-left: auto; margin-right: auto;"></a>
                 <hr class="hrOpcoes">
                 <h1>Turmas</h1>
             </div>
             <div class="maquinas">
-                <a href="{{url_for('listar_maquinas')}}"><img
-                        src="{{url_for('static', filename='img/logoMaquinas.png')}}"
-                        style="margin-left: auto; margin-right: auto; padding-left: 10%;"></a>
+                <a href="{{url_for('listar_maquinas')}}"><img src="{{url_for('static', filename='img/logoMaquinas.png')}}" style="margin-left: auto; margin-right: auto; padding-left: 10%;"></a>
                 <hr class="hrOpcoes">
                 <h1>Máquinas</h1>
             </div>
             <div class="alunos">
-                <a href="{{url_for('listar_alunos')}}"><img src="{{url_for('static', filename='img/logoAlunos.png')}}"
-                        style="margin-left: auto; margin-right: auto;"></a>
+                <a href="{{url_for('listar_alunos')}}"><img src="{{url_for('static', filename='img/logoAlunos.png')}}" style="margin-left: auto; margin-right: auto;"></a>
                 <hr class="hrOpcoes">
                 <h1>Alunos</h1>
             </div>
@@ -88,12 +82,6 @@
                 <h3 class="bemVindo">BEM VINDO!</h3>
                 {{form.csrf_token}}
 
-                {% for error in form.errors.values() %}
-                <div class="modal">
-                    <p>{{ error[0] }}</p>
-                </div>
-                {% endfor %}
-
                 <div class="totalEmail">
                     <div class="emailForm">{{form.email.label()}}</div>
                     <div class="email">
@@ -109,11 +97,26 @@
                     </div>
                 </div>
                 <div class="cadastro">
-                    <div class="mt-4 mr-0"><a href="{{url_for('cadastro')}}" class="cadastrase">Cadastrar-se</a></div>
+                    <!-- <div class="mt-4 mr-0"><a href="{{url_for('cadastro')}}" class="cadastrase">Cadastrar-se</a></div> -->
                     <div class="botaoForms">{{form.btnSubmit(class="btn btn-white")}}</div>
                 </div>
             </div>
         </form>
+
+        <!-- Modal para email inexistente -->
+        {% if 'email' in form.errors %}
+        <div id="emailErrorModal" class="modal">
+            <p>Email inexistente. Tente novamente.</p>
+        </div>
+        {% endif %}
+
+        <!-- Modal para senha incorreta -->
+        {% if 'senha' in form.errors %}
+        <div id="passwordErrorModal" class="modal">
+            <p>Senha incorreta. Tente novamente.</p>
+        </div>
+        {% endif %}
+
         {% endif %}
     </div>
 </div>
@@ -132,6 +135,12 @@
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 1000;
+        width: 300px;
+    }
+
+    /* Additional styles for closing modal */
+    .modal p {
+        margin: 0;
     }
 
     .cadastro {
@@ -219,4 +228,15 @@
         border-radius: 20px;
     }
 </style>
+
+<script>
+    // Fechar modal automaticamente após 3 segundos
+    setTimeout(function() {
+        var modals = document.querySelectorAll('.modal');
+        modals.forEach(function(modal) {
+            modal.style.display = 'none';
+        });
+    }, 3000);
+</script>
+
 {% endblock %}

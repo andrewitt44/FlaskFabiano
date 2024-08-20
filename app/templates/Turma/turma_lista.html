@@ -1,8 +1,8 @@
-{% extends 'base.html' %}
+{% extends "Codes/base.html" %}
 
 {% block content %}
 <div class="container">
-    {% include 'nave.html' %}
+    {% include 'Codes/nave.html' %}
     <span class="btn btn-primary">Professor: {{ current_user.nome }} {{ current_user.sobrenome }}</span>
     <div class="row mt-4">
         <h3 class="titulo">Lista de turmas<br></h3>
