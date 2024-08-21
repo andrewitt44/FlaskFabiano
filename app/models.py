@@ -56,6 +56,7 @@ class Comentario(db.Model):
 class Aluno(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=False)
+    maquina = db.Column(db.String, nullable=False)
     turma_id = db.Column(db.Integer, db.ForeignKey('turma.id'), nullable=True)
     turma = db.relationship('Turma', back_populates='alunos')
 

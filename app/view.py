@@ -1,9 +1,55 @@
 from app import app, db
-from flask import render_template, url_for, request, redirect, flash, session
+from flask import render_template, url_for, request, redirect, flash, session, make_response
 from app.forms import ComentarioForm, UserForm, LoginForm, TurmaForm, EditTurmaForm, EditAtividadeForm, MaquinaForm, EditMaquinaForm, AlunoForm, EditAlunoForm
 from app.models import Comentario, Turma, Atividade, Maquina, Aluno
 from flask_login import login_user, logout_user, current_user
 import os
+import pandas as pd
+
+@app.route('/exportar_dados/', methods=['GET', 'POST'])
+def exportar_dados():
+    turmas = Turma.query.all()
+    atividades = Atividade.query.all()
+    maquinas = Maquina.query.all()
+    alunos = Aluno.query.all()
+
+    turmas_df = pd.DataFrame([{
+        'ID': turma.id,
+        'Nome': turma.nome,
+    } for turma in turmas])
+
+    atividades_df = pd.DataFrame([{
+        'ID': atividade.id,
+        'Descrição': atividade.descricao,
+        'Turma ID': atividade.turma_id
+    } for atividade in atividades])
+
+    maquinas_df = pd.DataFrame([{
+        'ID': maquina.id,
+        'Nome': maquina.nome,
+        'Descrição': maquina.descricao
+    } for maquina in maquinas])
+
+    alunos_df = pd.DataFrame([{
+        'ID': aluno.id,
+        'Nome': aluno.nome,
+        'Máquina': aluno.maquina,
+    } for aluno in alunos])
+
+    output = pd.ExcelWriter('/tmp/relatorio_dados.xlsx', engine='xlsxwriter')
+    
+    turmas_df.to_excel(output, sheet_name='Turmas', index=False)
+    atividades_df.to_excel(output, sheet_name='Atividades', index=False)
+    maquinas_df.to_excel(output, sheet_name='Maquinas', index=False)
+    alunos_df.to_excel(output, sheet_name='Alunos', index=False)
+    
+    output.close()
+    
+    response = make_response(open('/tmp/relatorio_dados.xlsx', 'rb').read())
+    response.headers['Content-Disposition'] = 'attachment; filename=relatorio_dados.xlsx'
+    response.mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    return response
+
 
 @app.before_request
 def before_request():

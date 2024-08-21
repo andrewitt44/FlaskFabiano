@@ -9,28 +9,48 @@
         <div class="Title">
             <h1 class="welcomeTitle">Bem-Vindo</h1>
             <hr class="welcomeHr" style="margin-left: auto; margin-right: auto; width: 350px;">
-            <p class="welcomeText">Gerenciamos suas turmas de mecânica, facilitando a educação e simplificando a gestão.</p>
+            <p class="welcomeText">Gerenciamos suas turmas de mecânica, facilitando a educação e simplificando a gestão.
+            </p>
         </div>
         <div class="optionsWelcome">
             <div class="turmas">
-                <a href="{{url_for('TurmaLista')}}"><img src="{{url_for('static', filename='img/logoTurmas.png')}}" style="margin-left: auto; margin-right: auto;"></a>
+                <a href="{{url_for('TurmaLista')}}"><img src="{{url_for('static', filename='img/logoTurmas.png')}}"
+                        style="margin-left: auto; margin-right: auto;"></a>
                 <hr class="hrOpcoes">
                 <h1>Turmas</h1>
             </div>
             <div class="maquinas">
-                <a href="{{url_for('listar_maquinas')}}"><img src="{{url_for('static', filename='img/logoMaquinas.png')}}" style="margin-left: auto; margin-right: auto; padding-left: 10%;"></a>
+                <a href="{{url_for('listar_maquinas')}}"><img
+                        src="{{url_for('static', filename='img/logoMaquinas.png')}}"
+                        style="margin-left: auto; margin-right: auto; padding-left: 10%;"></a>
                 <hr class="hrOpcoes">
                 <h1>Máquinas</h1>
             </div>
             <div class="alunos">
-                <a href="{{url_for('listar_alunos')}}"><img src="{{url_for('static', filename='img/logoAlunos.png')}}" style="margin-left: auto; margin-right: auto;"></a>
+                <a href="{{url_for('listar_alunos')}}"><img src="{{url_for('static', filename='img/logoAlunos.png')}}"
+                        style="margin-left: auto; margin-right: auto;"></a>
                 <hr class="hrOpcoes">
                 <h1>Alunos</h1>
             </div>
+            {% if current_user.email == 'admin@gmail.com' %}
+            <div class="relatorio">
+                <form action="{{ url_for('exportar_dados') }}" method="get" style="margin-top: -0.5rem;">
+                    <button type="submit" class="btn"> 
+                        <a href="{{url_for('listar_alunos')}}"><img src="{{url_for('static', filename='img/iconRelatorio.png')}}"
+                            style="margin-left: auto; margin-right: auto; width: 90px; margin-right: 1.5rem;"></a>
+                    </button>
+                    <hr class="hrOpcoes" style="margin-top: 0.7rem; margin-bottom: 1rem;">
+                    <h1>Gerar Relatório</h1>
+                </form>
+            </div>
+            {% endif %}
         </div>
+
+
 
         <style>
             @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 
             .Title {
                 text-align: center;
@@ -57,7 +77,7 @@
             }
 
             .optionsWelcome {
-                margin-top: 4%;
+                margin-top: 10%;
                 display: flex;
                 justify-content: space-between;
                 gap: 10%;
@@ -97,7 +117,7 @@
                     </div>
                 </div>
                 <div class="cadastro">
-                    <!-- <div class="mt-4 mr-0"><a href="{{url_for('cadastro')}}" class="cadastrase">Cadastrar-se</a></div> -->
+                    <div class="mt-4 mr-0"><a href="{{url_for('cadastro')}}" class="cadastrase">Cadastrar-se</a></div>
                     <div class="botaoForms">{{form.btnSubmit(class="btn btn-white")}}</div>
                 </div>
             </div>
@@ -138,7 +158,6 @@
         width: 300px;
     }
 
-    /* Additional styles for closing modal */
     .modal p {
         margin: 0;
     }
@@ -231,9 +250,9 @@
 
 <script>
     // Fechar modal automaticamente após 3 segundos
-    setTimeout(function() {
+    setTimeout(function () {
         var modals = document.querySelectorAll('.modal');
-        modals.forEach(function(modal) {
+        modals.forEach(function (modal) {
             modal.style.display = 'none';
         });
     }, 3000);
