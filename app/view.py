@@ -5,6 +5,7 @@ from app.models import Comentario, Turma, Atividade, Maquina, Aluno
 from flask_login import login_user, logout_user, current_user
 import os
 import pandas as pd
+import tempfile
 
 @app.route('/exportar_dados/', methods=['GET', 'POST'])
 def exportar_dados():
@@ -36,8 +37,10 @@ def exportar_dados():
         'Máquina': aluno.maquina,
     } for aluno in alunos])
 
-    output = pd.ExcelWriter('/tmp/relatorio_dados.xlsx', engine='xlsxwriter')
     
+    temp_dir = tempfile.gettempdir()
+    output = pd.ExcelWriter(os.path.join(temp_dir, 'relatorio_dados.xlsx'), engine='xlsxwriter')
+        
     turmas_df.to_excel(output, sheet_name='Turmas', index=False)
     atividades_df.to_excel(output, sheet_name='Atividades', index=False)
     maquinas_df.to_excel(output, sheet_name='Maquinas', index=False)
@@ -45,10 +48,13 @@ def exportar_dados():
     
     output.close()
     
-    response = make_response(open('/tmp/relatorio_dados.xlsx', 'rb').read())
-    response.headers['Content-Disposition'] = 'attachment; filename=relatorio_dados.xlsx'
+    file_path = os.path.join(temp_dir, 'relatorio_dados.xlsx')
+    response = make_response(open(file_path, 'rb').read())
+    response.headers['Content-Disposition'] = f'attachment; filename=relatorio_dados.xlsx'
     response.mimetype = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     return response
+
+
 
 
 @app.before_request
