@@ -3,39 +3,48 @@
 {% block content %}
 <div class="container">
     {% include 'Codes/nave.html' %}
-    <span class="btn btn-primary">{{ current_user.nome }} {{ current_user.sobrenome }}</span>
     <div class="row mt-4">
         <h3>Turma: {{ turma.nome }}</h3>
-
-        <div class="col-12">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <br>
-                        <th class="bg-light border border-dark">ID</th>
-                        <th class="bg-light border border-dark">Nome da Atividade</th>
-                        <th class="bg-light border border-dark">Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for atividade in turma.atividades %}
-                    <tr>
-                        <td class="bg-light border border-dark">{{ atividade.id }}</td>
-                        <td class="bg-light border border-dark">{{ atividade.descricao }}</td>
-                        <td class="bg-light border border-dark">
-                            <form action="{{ url_for('atividadeDelete', id=atividade.id) }}" method="post">
-                                <button type="submit" class="btn btn-danger">Excluir</button>
-                                <a href="{{ url_for('atividadeEdit', id=atividade.id) }}"
-                                    class="btn btn-warning">Editar</a>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        
+        <div class="container">
+            <div class="row">
+                <!-- Coluna da Tabela -->
+                <div class="col-md-6">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="bg-light border border-dark">Nome da Atividade</th>
+                                <th class="bg-light border border-dark">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for atividade in turma.atividades %}
+                            <tr>
+                                <td class="bg-light border border-dark">{{ atividade.descricao }}</td>
+                                <td class="bg-light border border-dark">
+                                    <form action="{{ url_for('atividadeDelete', id=atividade.id) }}" method="post">
+                                        <button type="submit" class="btn btn-danger">Excluir</button>
+                                        <a href="{{ url_for('atividadeEdit', id=atividade.id) }}"
+                                            class="btn btn-warning">Editar</a>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+        
+                <!-- Coluna dos Alunos -->
+                <div class="col-md-6 alunos" style="text-align: center;">
+                    <a href="{{url_for('listar_alunos')}}"><img src="{{url_for('static', filename='img/logoAlunos.png')}}"
+                            style="margin-left: auto; margin-right: auto;"></a>
+                    <hr class="hrOpcoes">
+                    <h1>Alunos</h1>
+                </div>
+            </div>
         </div>
 
-        <div class="col-md-12 mt-4" style="display: flex; justify-content: space-between;">
+        <div class="col-md-12 mt-4" style="display: flex; justify-content: space-between; width: 50%;">
             <button id="backBtn"
                 style="text-decoration: none; padding-right: 2rem; padding-left: 2rem; border-radius: 30px; margin-top: 1rem">Voltar</button>
             <script>
@@ -50,7 +59,14 @@
                 </div>
             </form>
         </div>
-
     </div>
+    <style>
+        .hrOpcoes {
+            width: 100px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 4px solid black;
+        }
+    </style>
 </div>
 {% endblock %}

@@ -22,13 +22,6 @@
                 {{form.nome(class="form-control")}}
             </div>
         </div>
-        <div class="totalSobrenome">
-            <div class="sobrenomeForm">{{form.sobrenome.label()}}</div>
-            <div class="sobrenome">
-                <img src="{{url_for('static', filename='../static/img/iconUsuario.png')}}">
-                {{form.sobrenome(class="form-control")}}
-            </div>
-        </div>
         <div class="totalEmail">
             <div class="emailForm">{{form.email.label()}}</div>
             <div class="email">
@@ -58,7 +51,6 @@
                     history.back();
                 });
             </script>
-            <div class="mt-4 mr-0"><a href="{{url_for('cadastro')}}" class="cadastrase">Cadastrar-se</a></div>
             <div class="botaoForms">{{form.btnSubmit(class="btn btn-white")}}</div>
         </div>
     </div>
@@ -94,8 +86,6 @@
         padding: 0em 1em 0em 1em;
     }
 
-    .totalEmail {}
-
     .emailForm {
         font-size: 26px;
         margin-left: 42%;
@@ -107,8 +97,6 @@
         display: flex;
         margin-right: 10%;
     }
-
-    .totalSenha {}
 
     .senhaForm {
         font-size: 26px;

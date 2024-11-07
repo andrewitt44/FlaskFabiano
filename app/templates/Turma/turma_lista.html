@@ -14,8 +14,7 @@
                     <!-- Verifica se a turma possui uma imagem, caso contrário, usa uma imagem padrão -->
                     <img src="{{ url_for('static', filename='img/' + (turma.imagem if turma.imagem else 'default.jpg')) }}" class="card-img-top" alt="Imagem da Turma">
                     <div class="card-body text-center">
-                        <h5 class="card-title">Número: {{ turma.id }}</h5>
-                        <p class="card-text">Nome da turma: {{ turma.nome }}</p>
+                        <p class="card-title">Turma: {{ turma.nome }}</p>
                         <div class="d-flex justify-content-center">
                             <form action="{{ url_for('turmaDelete', id=turma.id) }}" method="post" class="mr-2">
                                 <button type="submit" class="btn btn-danger">Excluir</button>
@@ -65,6 +64,9 @@
     }
     .cadastro {
         margin-bottom: 2rem;
+    }
+    .card-title {
+        font-weight: bold;
     }
 </style>
 {% endblock %}

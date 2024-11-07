@@ -9,7 +9,6 @@ def load_user(user_id):
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     nome = db.Column(db.String, nullable=True)
-    sobrenome = db.Column(db.String, nullable=True)
     email = db.Column(db.String, nullable=True)
     senha = db.Column(db.String, nullable=True)
     turmas = db.relationship('Turma', backref='author', lazy=True)

@@ -3,7 +3,6 @@
 {% block content %}
 <div class="container">
     {% include 'Codes/nave.html' %}
-    <span class="btn btn-primary">Professor: {{ current_user.nome }} {{ current_user.sobrenome }}</span>
     <div class="row mt-4">
         <h3 class="titulo">Lista de Máquinas<br></h3>
         <hr class="hrTituloTurmas">
@@ -12,8 +11,6 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th class="bg-light border border-dark"
-                            style="width: 8%; text-align: center; font-size: 30px; font-weight: 400;">Número</th>
                         <th class="bg-light border border-dark"
                             style="width: 30%; text-align: center; font-size: 30px; font-weight: 400;">Nome da Máquina
                         </th>
@@ -26,8 +23,6 @@
                 <tbody>
                     {% for maquina in maquinas %}
                     <tr>
-                        <td class="bg-light border border-dark" style="text-align: center; font-size: 20px;">{{
-                            maquina.id }}</td>
                         <td class="bg-light border border-dark" style="text-align: center; font-size: 20px;">{{
                             maquina.nome }}</td>
                         <td class="bg-light border border-dark" style="text-align: center; font-size: 20px;">{{
