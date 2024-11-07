@@ -1,10 +1,14 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, TextAreaField
+from wtforms import StringField, SubmitField, PasswordField, TextAreaField, FileField
 from wtforms.validators import DataRequired, Email, EqualTo, ValidationError
-from app import db, bcrypt
+from app import db, bcrypt, app
 from app.models import Contato, User, Turma, Atividade, Aluno, Maquina
 from flask import flash
 from markupsafe import Markup
+
+import os
+from werkzeug.utils import secure_filename
+from werkzeug.datastructures import FileStorage
 
 
 class UserForm(FlaskForm):
@@ -66,15 +70,34 @@ class LoginForm(FlaskForm):
 
 class TurmaForm(FlaskForm):
     nome = StringField('Nome da turma', validators=[DataRequired()])
+    imagem = FileField('Imagem', validators=[DataRequired()])
     btnSubmit = SubmitField('Enviar')
 
     def save(self, user_id):
-        turma = Turma(
-            nome=self.nome.data,
-            user_id=user_id
-        )
-        db.session.add(turma)
-        db.session.commit()
+        imagem = self.imagem.data
+        if isinstance(imagem, FileStorage) and imagem.filename:
+            nome_seguro = secure_filename(imagem.filename)
+            turma = Turma(
+                nome=self.nome.data,
+                user_id=user_id,
+                imagem=nome_seguro
+            )
+            # Define o caminho para salvar a imagem diretamente na pasta 'static/img'
+            caminho_diretorio = os.path.join(
+                os.path.abspath(os.path.dirname(__file__)),
+                app.config['UPLOAD_FILES']
+            )
+            # Verifica se o diretório 'static/img' existe e cria, se necessário
+            os.makedirs(caminho_diretorio, exist_ok=True)
+
+            # Define o caminho completo do arquivo
+            caminho_arquivo = os.path.join(caminho_diretorio, nome_seguro)
+            imagem.save(caminho_arquivo)
+
+            db.session.add(turma)
+            db.session.commit()
+        else:
+            raise ValueError("Nenhum arquivo foi enviado.")
 
 class ComentarioForm(FlaskForm):
     text = TextAreaField('Atividade', validators=[DataRequired()])
@@ -82,14 +105,31 @@ class ComentarioForm(FlaskForm):
 
 class EditTurmaForm(FlaskForm):
     nome = StringField('Insira o novo nome da turma', validators=[DataRequired()])
+    imagem = FileField('Imagem', validators=[DataRequired()])
     btnSubmit = SubmitField('Atualizar')
 
-    def save(self, turma_id):
-        turma = Turma.query.get(turma_id)
-        if turma:
+    def save(self, turma):
+        imagem = self.imagem.data
+        if isinstance(imagem, FileStorage) and imagem.filename:
+            nome_seguro = secure_filename(imagem.filename)
             turma.nome = self.nome.data
-            db.session.commit()
-        return turma
+            turma.imagem = nome_seguro
+
+            # Define o caminho para salvar a imagem diretamente na pasta 'static/img'
+            caminho_diretorio = os.path.join(
+                os.path.abspath(os.path.dirname(__file__)),
+                app.config['UPLOAD_FILES']
+            )
+            # Verifica se o diretório 'static/img' existe e cria, se necessário
+            os.makedirs(caminho_diretorio, exist_ok=True)
+
+            # Define o caminho completo do arquivo
+            caminho_arquivo = os.path.join(caminho_diretorio, nome_seguro)
+            imagem.save(caminho_arquivo)
+
+            db.session.commit()  # Salva as alterações no banco de dados
+        else:
+            raise ValueError("Nenhum arquivo foi enviado.")
     
 class EditAtividadeForm(FlaskForm):
     descricao = StringField('Nome da atividade', validators=[DataRequired()])

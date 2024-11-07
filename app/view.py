@@ -133,7 +133,7 @@ def turmaEdit(id):
 
     form = EditTurmaForm(obj=turma)
     if form.validate_on_submit():
-        form.save(turma_id=id)
+        form.save(turma)
         return redirect(url_for('TurmaLista'))
 
     return render_template('Turma/turma_edit.html', form=form, turma=turma)

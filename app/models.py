@@ -28,6 +28,7 @@ class Turma(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data_criacao = db.Column(db.DateTime, default=datetime.now())
     nome = db.Column(db.String, nullable=True)
+    imagem = db.Column(db.String, nullable=True, default='default.png')
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=True)
     comentarios = db.relationship('Comentario', backref='turma', lazy=True, cascade="all, delete-orphan")
     alunos = db.relationship('Aluno', back_populates='turma', cascade='all, delete-orphan')
