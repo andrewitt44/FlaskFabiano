@@ -68,12 +68,11 @@ def before_request():
 @app.route('/', methods=['GET', 'POST'])
 def homepage():
     form = LoginForm()
-
     if form.validate_on_submit():
         user = form.login()
-        login_user(user, remember=True)
-        return redirect(url_for('homepage')) 
-
+        if user:
+            login_user(user, remember=True)
+            return redirect(url_for('homepage'))
     return render_template('Codes/index.html', form=form)
 
 @app.route('/cadastro/', methods=['GET', 'POST'])

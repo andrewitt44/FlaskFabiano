@@ -62,9 +62,10 @@ class LoginForm(FlaskForm):
             if bcrypt.check_password_hash(user.senha, self.senha.data.encode('utf-8')):
                 return user
             else:
-                raise ValidationError(Markup('<div class="modal">Senha Incorreta!!!</div>'))
+                flash(Markup('Senha incorreta!'), 'error')
         else:
-            raise ValidationError(Markup('<div class="modal">Usuário não encontrado</div>'))
+            flash(Markup('Usuário não encontrado'), 'error')
+        return None  # Retorna None caso login falhe
 
 class TurmaForm(FlaskForm):
     nome = StringField('Nome da turma', validators=[DataRequired()])

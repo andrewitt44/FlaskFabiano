@@ -22,9 +22,10 @@
             {% if current_user.email == 'admin@gmail.com' %}
             <div class="relatorio">
                 <form action="{{ url_for('exportar_dados') }}" method="get" style="margin-top: -0.5rem;">
-                    <button type="submit" class="btn"> 
-                        <a href="{{url_for('listar_alunos')}}"><img src="{{url_for('static', filename='img/iconRelatorio.png')}}"
-                            style="margin-left: auto; margin-right: auto; width: 90px; margin-right: 1.5rem;"></a>
+                    <button type="submit" class="btn">
+                        <a href="{{url_for('listar_alunos')}}"><img
+                                src="{{url_for('static', filename='img/iconRelatorio.png')}}"
+                                style="margin-left: auto; margin-right: auto; width: 90px; margin-right: 1.5rem;"></a>
                     </button>
                     <hr class="hrOpcoes" style="margin-top: 0.7rem; margin-bottom: 1rem;">
                     <h1>Gerar Relatório</h1>
@@ -40,53 +41,18 @@
             </div>
         </div>
 
-
-
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
-
-
-            .Title {
-                text-align: center;
-            }
-
-            .welcomeHr {
-                width: 25%;
-                border: 4px solid black;
-            }
-
-            .welcomeTitle {
-                font-size: 52px;
-                font-weight: 500;
-                font-family: "Montserrat", sans-serif;
-                margin-top: 8%;
-            }
-
-            .welcomeText {
-                font-size: 26px;
-                font-family: "Montserrat", sans-serif;
-                font-weight: 400;
-                margin-right: 17vw;
-                margin-left: 17vw;
-            }
-
-            .optionsWelcome {
-                margin-top: 10%;
-                display: flex;
-                justify-content: space-around;
-                gap: 10%;
-                text-align: center;
-            }
-
-            .hrOpcoes {
-                width: 100px;
-                margin-left: auto;
-                margin-right: auto;
-                border: 4px solid black;
-            }
-        </style>
-
         {% else %}
+
+        <!-- Exibir mensagens flash de erro -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash flash-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
 
         <form action="" method="post" class="areaLogin">
             <div class="ladoEsquerdo">
@@ -111,25 +77,10 @@
                     </div>
                 </div>
                 <div class="cadastro">
-                    <!-- <div class="mt-4 mr-0"><a href="{{url_for('cadastro')}}" class="cadastrase">Cadastrar-se</a></div> -->
                     <div class="botaoForms">{{form.btnSubmit(class="btn btn-white")}}</div>
                 </div>
             </div>
         </form>
-
-        <!-- Modal para email inexistente -->
-        {% if 'email' in form.errors %}
-        <div id="emailErrorModal" class="modal">
-            <p>Email inexistente. Tente novamente.</p>
-        </div>
-        {% endif %}
-
-        <!-- Modal para senha incorreta -->
-        {% if 'senha' in form.errors %}
-        <div id="passwordErrorModal" class="modal">
-            <p>Senha incorreta. Tente novamente.</p>
-        </div>
-        {% endif %}
 
         {% endif %}
     </div>
@@ -138,23 +89,60 @@
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
 
-    .modal {
-        background-color: #f44336;
-        color: white;
-        padding: 20px;
-        border-radius: 5px;
+    .Title {
         text-align: center;
-        position: fixed;
-        top: 20%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        z-index: 1000;
-        width: 300px;
     }
 
-    .modal p {
-        margin: 0;
+    .welcomeHr {
+        width: 25%;
+        border: 4px solid black;
     }
+
+    .welcomeTitle {
+        font-size: 52px;
+        font-weight: 500;
+        font-family: "Montserrat", sans-serif;
+        margin-top: 8%;
+    }
+
+    .welcomeText {
+        font-size: 26px;
+        font-family: "Montserrat", sans-serif;
+        font-weight: 400;
+        margin-right: 17vw;
+        margin-left: 17vw;
+    }
+
+    .optionsWelcome {
+        margin-top: 10%;
+        display: flex;
+        justify-content: space-around;
+        gap: 10%;
+        text-align: center;
+    }
+
+    .hrOpcoes {
+        width: 100px;
+        margin-left: auto;
+        margin-right: auto;
+        border: 4px solid black;
+    }
+
+    /* Estilos para mensagens flash */
+    .flash-messages {
+        margin-top: 1rem;
+        text-align: center;
+        /* display: none; */
+    }
+
+    .flash {
+        padding: 10px;
+        border-radius: 5px;
+        font-family: "Montserrat", sans-serif;
+        margin: 5px 0;
+        display: block;
+    }
+
 
     .cadastro {
         display: flex;
@@ -237,15 +225,5 @@
         border-radius: 20px;
     }
 </style>
-
-<script>
-    // Fechar modal automaticamente após 3 segundos
-    setTimeout(function () {
-        var modals = document.querySelectorAll('.modal');
-        modals.forEach(function (modal) {
-            modal.style.display = 'none';
-        });
-    }, 3000);
-</script>
 
 {% endblock %}
